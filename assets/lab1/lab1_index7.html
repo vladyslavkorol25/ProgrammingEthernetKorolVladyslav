@@ -1,0 +1,91 @@
+<HTML>
+<HEAD>
+<SCRIPT LANGUAGE="JavaScript">
+
+let product = new Array(6);
+product = ["Клавіатура", "Книга", "Календар", "Кабель", "Калькулятор", "Кружка"];
+
+let quantity = ["15", "40", "25", "60", "18", "30"];
+let cost = ["1200", "350", "150", "250", "500", "180"];
+
+let number;
+
+
+function addProducts() {
+    let list = document.form1.name_product;
+
+    for (let i = 0; i < product.length; i++) {
+        let option = document.createElement("option");
+        option.text = product[i];
+        option.value = i;
+        list.add(option);
+    }
+}
+
+
+function fun1() {
+    number = document.form1.name_product.value;
+
+    document.form1.output_quantity.value = quantity[number];
+    document.form1.output_cost.value = cost[number];
+}
+function fun2() {
+    let sum = Number(quantity[number]) * Number(cost[number]);
+
+    document.form1.output_sum.value =
+        "Загальна сума: " + sum + " грн";
+}
+
+</SCRIPT>
+</HEAD>
+
+<BODY onLoad="addProducts()">
+    <a style="display:block; text-align:right" href="home_index.html">
+На головну дисципліни
+</a>
+    <h3>Завдання 5</h3>
+
+<FORM NAME="form1">
+
+Виберіть товар:
+
+<SELECT NAME="name_product">
+</SELECT>
+
+<INPUT TYPE="button"
+       VALUE="Наявна кількість і вартість"
+       onClick="fun1()">
+
+<BR><BR>
+
+Наявна кількість на складі:
+
+<INPUT TYPE="text"
+       SIZE="30"
+       NAME="output_quantity">
+
+<BR><BR>
+
+Вартість за одиницю:
+
+<INPUT TYPE="text"
+       SIZE="30"
+       NAME="output_cost">
+
+<BR><BR>
+
+<INPUT TYPE="button"
+       VALUE="Загальна сума"
+       onClick="fun2()">
+
+<BR><BR>
+
+<INPUT TYPE="text"
+       SIZE="50"
+       NAME="output_sum">
+
+</FORM>
+
+</BODY>
+</HTML>
+```

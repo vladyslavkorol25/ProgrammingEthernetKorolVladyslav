@@ -1,0 +1,34 @@
+<html>
+<head>
+<script>
+function fun()
+{
+    let x, y, F;
+    x = parseFloat(main_form.t_x.value);
+    y = parseFloat(main_form.t_y.value);
+
+    if (Math.pow(x, 2) > 3) {
+        F = Math.pow(x, 3) - Math.sqrt(x);
+    } else if (x > 0 && y < 0) {
+        F = x * y;
+    } else {
+        F = x + y + x * y - x / y;
+    }
+    
+    main_form.t_F.value = "" + F;
+}
+</script>
+</head>
+<body>
+    <a style="display:block; text-align:right" href="home_index.html">
+На головну дисципліни
+</a>
+    <h3>Завдання 4</h3>
+<form id="main_form">
+x <input type="text" id="t_x" value="2"><br>
+y <input type="text" id="t_y" value="-1"><br>
+F <input type="text" id="t_F" value=""><br>
+<input type="button" onClick="fun();" value="Розрахувати">
+</form>
+</body>
+</html>
