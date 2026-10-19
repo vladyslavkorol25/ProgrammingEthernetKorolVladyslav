@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестування</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f9f9f9;
+        }
+
+        /* ================== НАВІГАЦІЙНЕ МЕНЮ ================== */
+        .navbar {
+            background: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            height: 60px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Пункти меню (десктоп) */
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-menu li a {
+            display: block;
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 20px 18px;
+            height: 60px;
+            line-height: 20px;
+            font-size: 15px;
+            transition: background 0.3s, color 0.3s;
+            position: relative;
+        }
+
+        .nav-menu li a::after {
+            content: '';
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            bottom: 12px;
+            height: 2px;
+            background: #3498db;
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-menu li a:hover {
+            background: #34495e;
+            color: #3498db;
+        }
+
+        .nav-menu li a:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* ================== БУРГЕР-ІКОНКА ================== */
+        .burger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 22px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .burger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background: #ecf0f1;
+            border-radius: 2px;
+            transition: transform 0.35s ease, opacity 0.25s ease;
+        }
+
+        /* Анімація "бургер → хрестик" */
+        .burger.active span:nth-child(1) {
+            transform: translateY(9.5px) rotate(45deg);
+        }
+        .burger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .burger.active span:nth-child(3) {
+            transform: translateY(-9.5px) rotate(-45deg);
+        }
+
+        /* ================== АДАПТИВНІСТЬ ================== */
+        @media (max-width: 768px) {
+            .burger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: #2c3e50;
+                overflow: hidden;
+                max-height: 0;
+                opacity: 0;
+                transition: max-height 0.45s ease, opacity 0.35s ease;
+            }
+
+            .nav-menu.open {
+                max-height: 400px;
+                opacity: 1;
+            }
+
+            .nav-menu li a {
+                padding: 15px 20px;
+                height: auto;
+                border-top: 1px solid #3d566e;
+            }
+
+            .nav-menu li a::after {
+                display: none;
+            }
+        }
+
+        /* ================== КОНТЕНТ ================== */
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        h1, h2 { color: #2c3e50; }
+
+        .question {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .question p.title { font-weight: bold; margin: 0 0 10px; }
+
+        label { display: block; margin: 5px 0; cursor: pointer; }
+
+        select, input[type="text"] {
+            padding: 5px;
+            font-size: 14px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        button.submit {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button.submit:hover { background: #2980b9; }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            background: #fff;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th { background: #34495e; color: white; }
+
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            padding: 10px;
+            background: #dff0d8;
+            border-radius: 6px;
+        }
+
+        .hint { font-size: 12px; color: #888; }
+    </style>
+</head>
+<body>
+<a class="top-link" href="home_index.html">На головну дисципліни</a>
+
+<!-- ================== МЕНЮ ================== -->
+<nav class="navbar">
+    <div class="logo">МоєТестування</div>
+
+    <button class="burger" id="burgerBtn" aria-label="Меню">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <ul class="nav-menu" id="navMenu">
+        <li><a href="#test">Тест</a></li>
+        <li><a href="#q3">Питання 3</a></li>
+        <li><a href="#q6">Питання 6</a></li>
+        <li><a href="#resultBlock">Результати</a></li>
+        <li><a href="#top">Вгору</a></li>
+    </ul>
+</nav>
+
+<!-- ================== КОНТЕНТ ================== -->
+<div class="container" id="top">
+    <h1>Тестування</h1>
+    <p class="hint">Правильна відповідь: +1 бал, неправильна: −1 бал. Мінімальний бал за питання — 0.</p>
+
+    <form id="testForm">
+
+        <div class="question">
+            <p class="title">1. Яка столиця України?</p>
+            <label><input type="radio" name="pol0" value="1"> Київ</label>
+            <label><input type="radio" name="pol0" value="-1"> Харків</label>
+            <label><input type="radio" name="pol0" value="-1"> Одеса</label>
+            <label><input type="radio" name="pol0" value="-1"> Львів</label>
+        </div>
+
+        <div class="question">
+            <p class="title">2. Скільки буде 2 + 2 × 2?</p>
+            <label><input type="radio" name="pol1" value="-1"> 8</label>
+            <label><input type="radio" name="pol1" value="1"> 6</label>
+            <label><input type="radio" name="pol1" value="-1"> 4</label>
+            <label><input type="radio" name="pol1" value="-1"> 10</label>
+        </div>
+
+        <div class="question" id="q3">
+            <p class="title">3. Які з цих мов є слов'янськими? (2 правильних)</p>
+            <label><input type="checkbox" name="cb0" value="1"> Українська</label>
+            <label><input type="checkbox" name="cb0" value="1"> Польська</label>
+            <label><input type="checkbox" name="cb0" value="-1"> Англійська</label>
+            <label><input type="checkbox" name="cb0" value="-1"> Німецька</label>
+        </div>
+
+        <div class="question">
+            <p class="title">4. Які з цих чисел є парними? (3 правильних)</p>
+            <label><input type="checkbox" name="cb1" value="1"> 2</label>
+            <label><input type="checkbox" name="cb1" value="1"> 4</label>
+            <label><input type="checkbox" name="cb1" value="1"> 6</label>
+            <label><input type="checkbox" name="cb1" value="-1"> 7</label>
+        </div>
+
+        <div class="question">
+            <p class="title">5. Яка планета найбільша в Сонячній системі?</p>
+            <select name="sel0">
+                <option value="0">— Оберіть —</option>
+                <option value="-1">Марс</option>
+                <option value="1">Юпітер</option>
+                <option value="-1">Земля</option>
+                <option value="-1">Сатурн</option>
+            </select>
+        </div>
+
+        <div class="question" id="q6">
+            <p class="title">6. Які з цих кольорів є основними (RGB)? (2 правильних, утримуйте Ctrl)</p>
+            <select name="sel1" multiple size="4">
+                <option value="1">Червоний</option>
+                <option value="1">Зелений</option>
+                <option value="-1">Жовтий</option>
+                <option value="-1">Фіолетовий</option>
+            </select>
+        </div>
+
+        <div class="question">
+            <p class="title">7. Напишіть слово "Україна" (1 бал за правильну відповідь)</p>
+            <input type="text" name="txt0" placeholder="Введіть відповідь...">
+        </div>
+
+        <button type="button" class="submit" onclick="Result()">Завершити тестування</button>
+    </form>
+
+    <div id="resultBlock"></div>
+</div>
+
+<script>
+/* ================== БУРГЕР-МЕНЮ ================== */
+const burgerBtn = document.getElementById('burgerBtn');
+const navMenu   = document.getElementById('navMenu');
+
+burgerBtn.addEventListener('click', function () {
+    // Плавне розгортання/згортання через CSS-клас .open
+    navMenu.classList.toggle('open');
+    // Анімація іконки "бургер → хрестик"
+    burgerBtn.classList.toggle('active');
+});
+
+// Закриваємо меню після кліку по пункту (для мобільних)
+document.querySelectorAll('.nav-menu li a').forEach(function (link) {
+    link.addEventListener('click', function () {
+        if (window.innerWidth <= 768) {
+            navMenu.classList.remove('open');
+            burgerBtn.classList.remove('active');
+        }
+    });
+});
+
+/* ================== ЛОГІКА ТЕСТУ ================== */
+function Result() {
+    const form = document.getElementById('testForm');
+    const results = [];
+
+    // 1. Радіокнопки pol0
+    let a1 = 'Не обрано', s1 = 0;
+    for (let i = 0; i < form.pol0.length; i++) {
+        if (form.pol0[i].checked) {
+            a1 = form.pol0[i].parentNode.textContent.trim();
+            s1 = parseFloat(form.pol0[i].value);
+        }
+    }
+    results.push({q: '1. Яка столиця України?', a: a1, s: s1});
+
+    // 2. Радіокнопки pol1
+    let a2 = 'Не обрано', s2 = 0;
+    for (let i = 0; i < form.pol1.length; i++) {
+        if (form.pol1[i].checked) {
+            a2 = form.pol1[i].parentNode.textContent.trim();
+            s2 = parseFloat(form.pol1[i].value);
+        }
+    }
+    results.push({q: '2. Скільки буде 2 + 2 × 2?', a: a2, s: s2});
+
+    // 3. Чекбокси cb0
+    let a3arr = [], s3 = 0;
+    for (let i = 0; i < form.cb0.length; i++) {
+        if (form.cb0[i].checked) {
+            a3arr.push(form.cb0[i].parentNode.textContent.trim());
+            s3 += parseFloat(form.cb0[i].value);
+        }
+    }
+    if (s3 < 0) s3 = 0;
+    results.push({q: '3. Які з цих мов є слов\'янськими?',
+                  a: a3arr.length ? a3arr.join(', ') : 'Не обрано', s: s3});
+
+    // 4. Чекбокси cb1
+    let a4arr = [], s4 = 0;
+    for (let i = 0; i < form.cb1.length; i++) {
+        if (form.cb1[i].checked) {
+            a4arr.push(form.cb1[i].parentNode.textContent.trim());
+            s4 += parseFloat(form.cb1[i].value);
+        }
+    }
+    if (s4 < 0) s4 = 0;
+    results.push({q: '4. Які з цих чисел є парними?',
+                  a: a4arr.length ? a4arr.join(', ') : 'Не обрано', s: s4});
+
+    // 5. Select одинарний
+    const sel0 = form.sel0;
+    const a5 = sel0.options[sel0.selectedIndex].text;
+    const s5 = parseFloat(sel0.value);
+    results.push({q: '5. Яка планета найбільша в Сонячній системі?', a: a5, s: s5});
+
+    // 6. Select множинний
+    let a6arr = [], s6 = 0;
+    for (let i = 0; i < form.sel1.options.length; i++) {
+        if (form.sel1.options[i].selected && form.sel1.options[i].value !== '0') {
+            a6arr.push(form.sel1.options[i].text);
+            s6 += parseFloat(form.sel1.options[i].value);
+        }
+    }
+    if (s6 < 0) s6 = 0;
+    results.push({q: '6. Які з цих кольорів є основними (RGB)?',
+                  a: a6arr.length ? a6arr.join(', ') : 'Не обрано', s: s6});
+
+    // 7. Текстове поле
+    const txt = form.txt0.value.trim();
+    const a7 = txt === '' ? 'Не введено' : txt;
+    let s7 = (txt.toLowerCase() === 'україна') ? 1 : 0;
+    results.push({q: '7. Напишіть слово "Україна"', a: a7, s: s7});
+
+    // Формування таблиці
+    let total = 0;
+    let html = '<h2>Результати тестування</h2><table>';
+    html += '<tr><th>№</th><th>Запитання</th><th>Обрані варіанти</th><th>Бал</th></tr>';
+    for (let i = 0; i < results.length; i++) {
+        total += results[i].s;
+        html += '<tr><td>' + (i + 1) + '</td><td>' + results[i].q +
+                '</td><td>' + results[i].a + '</td><td>' + results[i].s + '</td></tr>';
+    }
+    html += '</table><div class="total">Загальний бал: ' + total + ' з 7</div>';
+
+    document.getElementById('resultBlock').innerHTML = html;
+}
+</script>
+
+</body>
+</html>

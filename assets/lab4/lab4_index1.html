@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Тестування</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 900px;
+            background: #f9f9f9;
+        }
+        h2 { color: #2c3e50; }
+        .question {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .question p.title { font-weight: bold; margin: 0 0 10px; }
+        label { display: block; margin: 5px 0; cursor: pointer; }
+        select, input[type="text"] {
+            padding: 5px;
+            font-size: 14px;
+            width: 100%;
+            max-width: 400px;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover { background: #2980b9; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            background: #fff;
+        }
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th { background: #34495e; color: white; }
+        .total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            padding: 10px;
+            background: #dff0d8;
+            border-radius: 6px;
+        }
+        .hint { font-size: 12px; color: #888; }
+    </style>
+</head>
+<body>
+    <a class="top-link" href="home_index.html">На головну дисципліни</a>
+<h1>Тестування</h1>
+<p class="hint">Правильна відповідь: +1 бал, неправильна: −1 бал. Мінімальний бал за питання — 0.</p>
+
+<form id="testForm">
+
+    <!-- ========== 1. Радіокнопки (група 1) ========== -->
+    <div class="question">
+        <p class="title">1. Яка столиця України?</p>
+        <label><input type="radio" name="pol0" value="1"> Київ</label>
+        <label><input type="radio" name="pol0" value="-1"> Харків</label>
+        <label><input type="radio" name="pol0" value="-1"> Одеса</label>
+        <label><input type="radio" name="pol0" value="-1"> Львів</label>
+    </div>
+
+    <!-- ========== 2. Радіокнопки (група 2) ========== -->
+    <div class="question">
+        <p class="title">2. Скільки буде 2 + 2 × 2?</p>
+        <label><input type="radio" name="pol1" value="-1"> 8</label>
+        <label><input type="radio" name="pol1" value="1"> 6</label>
+        <label><input type="radio" name="pol1" value="-1"> 4</label>
+        <label><input type="radio" name="pol1" value="-1"> 10</label>
+    </div>
+
+    <!-- ========== 3. Чекбокси (група 1): 2 правильних, 2 неправильних ========== -->
+    <div class="question">
+        <p class="title">3. Які з цих мов є слов'янськими? (2 правильних)</p>
+        <label><input type="checkbox" name="cb0" value="1"> Українська</label>
+        <label><input type="checkbox" name="cb0" value="1"> Польська</label>
+        <label><input type="checkbox" name="cb0" value="-1"> Англійська</label>
+        <label><input type="checkbox" name="cb0" value="-1"> Німецька</label>
+    </div>
+
+    <!-- ========== 4. Чекбокси (група 2): 3 правильних, 1 неправильний ========== -->
+    <div class="question">
+        <p class="title">4. Які з цих чисел є парними? (3 правильних)</p>
+        <label><input type="checkbox" name="cb1" value="1"> 2</label>
+        <label><input type="checkbox" name="cb1" value="1"> 4</label>
+        <label><input type="checkbox" name="cb1" value="1"> 6</label>
+        <label><input type="checkbox" name="cb1" value="-1"> 7</label>
+    </div>
+
+    <!-- ========== 5. Select одинарний ========== -->
+    <div class="question">
+        <p class="title">5. Яка планета найбільша в Сонячній системі?</p>
+        <select name="sel0">
+            <option value="0">— Оберіть —</option>
+            <option value="-1">Марс</option>
+            <option value="1">Юпітер</option>
+            <option value="-1">Земля</option>
+            <option value="-1">Сатурн</option>
+        </select>
+    </div>
+
+    <!-- ========== 6. Select множинний: 2 правильних, 2 неправильних ========== -->
+    <div class="question">
+        <p class="title">6. Які з цих кольорів є основними (RGB)? (2 правильних, утримуйте Ctrl)</p>
+        <select name="sel1" multiple size="4">
+            <option value="1">Червоний</option>
+            <option value="1">Зелений</option>
+            <option value="-1">Жовтий</option>
+            <option value="-1">Фіолетовий</option>
+        </select>
+    </div>
+
+    <!-- ========== 7. Текстове поле ========== -->
+    <div class="question">
+        <p class="title">7. Напишіть слово "Україна" (1 бал за правильну відповідь)</p>
+        <input type="text" name="txt0" placeholder="Введіть відповідь...">
+    </div>
+
+    <button type="button" onclick="Result()">Завершити тестування</button>
+</form>
+
+<div id="resultBlock"></div>
+
+<script>
+function Result() {
+    const form = document.getElementById('testForm');
+    const results = []; // масив {question, answer, score}
+
+    // ---- 1. Радіокнопки (pol0) ----
+    let q1 = '1. Яка столиця України?';
+    let a1 = 'Не обрано';
+    let s1 = 0;
+    for (let i = 0; i < form.pol0.length; i++) {
+        if (form.pol0[i].checked) {
+            a1 = form.pol0[i].parentNode.textContent.trim();
+            s1 = parseFloat(form.pol0[i].value);
+        }
+    }
+    results.push({q: q1, a: a1, s: s1});
+
+    // ---- 2. Радіокнопки (pol1) ----
+    let q2 = '2. Скільки буде 2 + 2 × 2?';
+    let a2 = 'Не обрано';
+    let s2 = 0;
+    for (let i = 0; i < form.pol1.length; i++) {
+        if (form.pol1[i].checked) {
+            a2 = form.pol1[i].parentNode.textContent.trim();
+            s2 = parseFloat(form.pol1[i].value);
+        }
+    }
+    results.push({q: q2, a: a2, s: s2});
+
+    // ---- 3. Чекбокси (cb0): 2 правильних, 2 неправильних ----
+    let q3 = '3. Які з цих мов є слов\'янськими?';
+    let a3arr = [];
+    let s3 = 0;
+    for (let i = 0; i < form.cb0.length; i++) {
+        if (form.cb0[i].checked) {
+            a3arr.push(form.cb0[i].parentNode.textContent.trim());
+            s3 += parseFloat(form.cb0[i].value);
+        }
+    }
+    if (s3 < 0) s3 = 0; // мінімум 0
+    results.push({q: q3, a: a3arr.length ? a3arr.join(', ') : 'Не обрано', s: s3});
+
+    // ---- 4. Чекбокси (cb1): 3 правильних, 1 неправильний ----
+    let q4 = '4. Які з цих чисел є парними?';
+    let a4arr = [];
+    let s4 = 0;
+    for (let i = 0; i < form.cb1.length; i++) {
+        if (form.cb1[i].checked) {
+            a4arr.push(form.cb1[i].parentNode.textContent.trim());
+            s4 += parseFloat(form.cb1[i].value);
+        }
+    }
+    if (s4 < 0) s4 = 0;
+    results.push({q: q4, a: a4arr.length ? a4arr.join(', ') : 'Не обрано', s: s4});
+
+    // ---- 5. Select одинарний ----
+    let q5 = '5. Яка планета найбільша в Сонячній системі?';
+    let sel0 = form.sel0;
+    let a5 = sel0.options[sel0.selectedIndex].text;
+    let s5 = parseFloat(sel0.value);
+    results.push({q: q5, a: a5, s: s5});
+
+    // ---- 6. Select множинний (sel1) ----
+    let q6 = '6. Які з цих кольорів є основними (RGB)?';
+    let a6arr = [];
+    let s6 = 0;
+    for (let i = 0; i < form.sel1.options.length; i++) {
+        if (form.sel1.options[i].selected && form.sel1.options[i].value !== '0') {
+            a6arr.push(form.sel1.options[i].text);
+            s6 += parseFloat(form.sel1.options[i].value);
+        }
+    }
+    if (s6 < 0) s6 = 0;
+    results.push({q: q6, a: a6arr.length ? a6arr.join(', ') : 'Не обрано', s: s6});
+
+    // ---- 7. Текстове поле ----
+    let q7 = '7. Напишіть слово "Україна"';
+    let txt = form.txt0.value.trim();
+    let a7 = txt === '' ? 'Не введено' : txt;
+    let s7 = (txt.toLowerCase() === 'україна') ? 1 : (txt === '' ? 0 : -1);
+    if (s7 < 0) s7 = 0;
+    results.push({q: q7, a: a7, s: s7});
+
+    // ---- Формування таблиці ----
+    let total = 0;
+    let html = '<h2>Результати тестування</h2>';
+    html += '<table>';
+    html += '<tr><th>№</th><th>Запитання</th><th>Обрані варіанти</th><th>Бал</th></tr>';
+    for (let i = 0; i < results.length; i++) {
+        total += results[i].s;
+        html += '<tr>';
+        html += '<td>' + (i + 1) + '</td>';
+        html += '<td>' + results[i].q + '</td>';
+        html += '<td>' + results[i].a + '</td>';
+        html += '<td>' + results[i].s + '</td>';
+        html += '</tr>';
+    }
+    html += '</table>';
+    html += '<div class="total">Загальний бал: ' + total + ' з 7</div>';
+
+    document.getElementById('resultBlock').innerHTML = html;
+}
+</script>
+
+</body>
+</html>
