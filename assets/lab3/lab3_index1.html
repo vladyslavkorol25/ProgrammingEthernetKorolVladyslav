@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Розрахунок площі прямокутника</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 24px;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 400px;
+        }
+        .row {
+            display: flex;
+            align-items: center;
+        }
+        .label {
+            width: 150px;
+        }
+        input[type="number"] {
+            font-size: 20px;
+            padding: 5px;
+            width: 100px;
+            border: 2px solid #ccc;
+            border-radius: 2px;
+        }
+        #result {
+            font-weight: bold;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+                    <a style="display:block; text-align:right" href="home_index.html">
+На головну дисципліни
+</a>
+
+    <h3>Орієнтовний вигляд веб-сторінки:</h3>
+
+    <div class="container">
+        <div class="row">
+            <span class="label">Довжина</span>
+            <input type="number" id="lengthInput" value="2">
+        </div>
+
+        <div class="row">
+            <span class="label">Ширина</span>
+            <input type="number" id="widthInput" value="3">
+        </div>
+
+        <div class="row">
+            <span class="label">Площа</span>
+            <span id="result">6</span>
+        </div>
+    </div>
+
+    <script>
+        const lengthInput = document.getElementById('lengthInput');
+        const widthInput = document.getElementById('widthInput');
+        const resultSpan = document.getElementById('result');
+
+        function calculateArea() {
+            const length = parseFloat(lengthInput.value);
+            const width = parseFloat(widthInput.value);
+
+            if (!isNaN(length) && !isNaN(width)) {
+                const area = length * width;
+                resultSpan.textContent = area;
+            } else {
+                resultSpan.textContent = "0";
+            }
+        }
+
+        lengthInput.addEventListener('input', calculateArea);
+        widthInput.addEventListener('input', calculateArea);
+
+        calculateArea();
+    </script>
+
+</body>
+</html>

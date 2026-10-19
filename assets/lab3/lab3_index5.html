@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Дерево ієрархії</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            font-size: 18px;
+            padding: 20px;
+            color: #000;
+        }
+
+        .top-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 16px;
+            color: #0056b3;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+        }
+        .top-link:hover {
+            text-decoration: underline;
+        }
+
+        .tree-container {
+            width: 600px;
+        }
+
+        /* Стиль для заголовків груп (fruits:, vegetables:) */
+        .category-title {
+            display: block;
+            background-color: #cccccc;
+            padding: 4px 8px;
+            font-weight: bold;
+            text-decoration: underline;
+            color: black;
+            cursor: pointer; /* Вказує, що на це можна клікнути */
+            margin-top: 15px;
+            user-select: none; /* Запобігає виділенню тексту при подвійному кліку */
+        }
+
+        .category-title:hover {
+            background-color: #b3b3b3;
+        }
+
+        /* Стиль для списку елементів */
+        .items-list {
+            background-color: #cccccc;
+            padding: 10px 10px 10px 40px;
+            margin: 0;
+            /* Ці властивості роблять блок сірим і на всю ширину, як на скріншоті */
+            list-style-type: decimal; 
+        }
+
+        .items-list li {
+            padding: 2px 0;
+        }
+
+        /* Клас для приховування списку */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <a class="top-link" href="home_index.html">На головну дисципліни</a>
+
+    <h3>Завдання 5</h3>
+    <p>Створити за допомогою JavaScript дерево для показу ієрархії.</p>
+
+    <!-- Контейнер, куди JavaScript згенерує дерево -->
+    <div class="tree-container" id="treeRoot"></div>
+
+    <p style="margin-top: 30px; font-size: 16px;">
+        Натискання на посилання згортає або розгортає перелік під-розділів.
+    </p>
+
+    <script>
+        // 1. Створюємо структуру даних (ієрархію)
+        const hierarchyData = {
+            "fruits:": [
+                "apple",
+                "pineapple;",
+                "apricot;",
+                "pear;",
+                "lemon;"
+            ],
+            "vegetables:": [
+                "potatoes;",
+                "beetroot;",
+                "carrots;",
+                "pear;" // На скріншоті в овочах теж pear, залишаємо як є
+            ]
+        };
+
+        // 2. Отримуємо контейнер для виводу
+        const treeRoot = document.getElementById('treeRoot');
+
+        // 3. Функція для генерації дерева
+        function buildTree(data) {
+            // Проходимося по кожному ключу (fruits:, vegetables:)
+            for (let category in data) {
+                if (data.hasOwnProperty(category)) {
+                    
+                    // Створюємо заголовок категорії
+                    const titleElement = document.createElement('a');
+                    titleElement.className = 'category-title';
+                    titleElement.textContent = category;
+                    titleElement.href = "javascript:void(0);"; // Робимо схожим на посилання
+                    
+                    // Створюємо список елементів
+                    const listElement = document.createElement('ol');
+                    listElement.className = 'items-list';
+
+                    // Додаємо елементи до списку
+                    data[category].forEach(item => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = item;
+                        listElement.appendChild(listItem);
+                    });
+
+                    // Додаємо подію кліку для згортання/розгортання
+                    titleElement.addEventListener('click', function() {
+                        listElement.classList.toggle('hidden');
+                    });
+
+                    // Додаємо створені елементи в контейнер
+                    treeRoot.appendChild(titleElement);
+                    treeRoot.appendChild(listElement);
+                }
+            }
+        }
+
+        // 4. Запускаємо генерацію при завантаженні сторінки
+        buildTree(hierarchyData);
+    </script>
+
+</body>
+</html>

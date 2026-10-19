@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #ffffff;
+        }
+
+        .calculator {
+            background-color: #e6f2fb;
+            padding: 10px 15px 20px 15px;
+            border-radius: 5px;
+            border: 1px solid #d0e3f5;
+            width: 320px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Дисплей */
+        .display-container {
+            background-color: #ffffff;
+            border: 3px solid #b0b0b0;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            height: 85px;
+            justify-content: space-between;
+        }
+
+        .current-input {
+            font-size: 42px;
+            color: #333;
+            font-weight: normal;
+            line-height: 1;
+        }
+
+        .expression {
+            font-size: 14px;
+            color: #999;
+            min-height: 16px;
+        }
+
+        /* Верхня панель з іконками */
+        .top-panel {
+            display: flex;
+            gap: 15px;
+            padding-bottom: 10px;
+            color: #b0c4de;
+            font-size: 16px;
+            padding-left: 5px;
+        }
+        
+        .top-panel span {
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        /* Сітка кнопок */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        button {
+            border: 1px solid #c0c0c0;
+            border-radius: 3px;
+            font-size: 24px;
+            padding: 12px 0;
+            cursor: pointer;
+            background-color: #f4f4f4;
+            color: #0056b3; /* Синій колір цифр */
+            font-weight: bold;
+            box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(0,0,0,0.1);
+            transition: background-color 0.1s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button:active {
+            background-color: #e0e0e0;
+        }
+
+        /* Кнопки операцій (сірі) */
+        .op-btn {
+            background-color: #8c8c8c;
+            color: #ffffff;
+            border-color: #7a7a7a;
+            font-weight: normal;
+            font-size: 22px;
+        }
+        .op-btn:active { background-color: #7a7a7a; }
+
+        /* Кнопка очищення (червона) */
+        .clear-btn {
+            background-color: #e60000;
+            color: #ffffff;
+            border-color: #cc0000;
+            font-weight: bold;
+        }
+        .clear-btn:active { background-color: #cc0000; }
+
+        /* Кнопка дорівнює (синя, на два ряди) */
+        .equal-btn {
+            background-color: #0056b3;
+            color: #ffffff;
+            border-color: #004080;
+            grid-column: 5;
+            grid-row: 3 / span 2;
+            font-size: 28px;
+        }
+        .equal-btn:active { background-color: #004080; }
+
+        /* Дрібні шрифти для специфічних кнопок */
+        .backspace-btn { font-size: 20px; }
+        .negate-btn { font-size: 18px; }
+        
+        /* Вирівнювання стрілки */
+        .backspace-btn i { font-style: normal; }
+
+    </style>
+</head>
+<body>
+<a style="display:block; text-align:right" href="home_index.html">
+На головну дисципліни
+</a>
+    <div class="calculator">
+        <div class="display-container">
+            <div class="current-input" id="display">0</div>
+            <div class="expression" id="expression"></div>
+        </div>
+
+        <div class="top-panel">
+            <span>&#9198;</span> <!-- Power icon -->
+            <span>&#128295;</span> <!-- Wrench icon -->
+            <span>&#9881;</span> <!-- Gear icon -->
+        </div>
+
+        <div class="keypad">
+            <!-- 1-й ряд -->
+            <button class="num-btn" onclick="appendNumber('7')">7</button>
+            <button class="num-btn" onclick="appendNumber('8')">8</button>
+            <button class="num-btn" onclick="appendNumber('9')">9</button>
+            <button class="op-btn backspace-btn" onclick="backspace()">&#8594;</button>
+            <button class="clear-btn" onclick="clearAll()">C</button>
+
+            <!-- 2-й ряд -->
+            <button class="num-btn" onclick="appendNumber('4')">4</button>
+            <button class="num-btn" onclick="appendNumber('5')">5</button>
+            <button class="num-btn" onclick="appendNumber('6')">6</button>
+            <button class="op-btn" onclick="setOperation('*')">&times;</button>
+            <button class="op-btn" onclick="setOperation('/')">&divide;</button>
+
+            <!-- 3-й ряд -->
+            <button class="num-btn" onclick="appendNumber('1')">1</button>
+            <button class="num-btn" onclick="appendNumber('2')">2</button>
+            <button class="num-btn" onclick="appendNumber('3')">3</button>
+            <button class="op-btn" onclick="setOperation('-')">&minus;</button>
+            <button class="equal-btn" onclick="calculate()">=</button>
+
+            <!-- 4-й ряд -->
+            <button class="op-btn negate-btn" onclick="toggleSign()">+/-</button>
+            <button class="num-btn" onclick="appendNumber('0')">0</button>
+            <button class="num-btn" onclick="appendNumber('.')">.</button>
+            <button class="op-btn" onclick="setOperation('+')">+</button>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = '0';
+        let previousInput = '';
+        let currentOperation = null;
+        let shouldResetDisplay = false;
+
+        const displayElement = document.getElementById('display');
+        const expressionElement = document.getElementById('expression');
+
+        function updateDisplay() {
+            displayElement.textContent = currentInput;
+            
+            if (previousInput !== '' && currentOperation !== null) {
+                let opSymbol = currentOperation;
+                if (opSymbol === '*') opSymbol = '×';
+                if (opSymbol === '/') opSymbol = '÷';
+                if (opSymbol === '-') opSymbol = '−';
+                
+                // Відображення виразу як на скріншоті (напр. 4+6=10)
+                expressionElement.textContent = `${previousInput}${opSymbol}${shouldResetDisplay ? '' : currentInput}`;
+            } else {
+                expressionElement.textContent = '';
+            }
+        }
+
+        function appendNumber(number) {
+            if (currentInput === '0' || shouldResetDisplay) {
+                currentInput = number;
+                shouldResetDisplay = false;
+            } else {
+                if (number === '.' && currentInput.includes('.')) return;
+                currentInput += number;
+            }
+            updateDisplay();
+        }
+
+        function clearAll() {
+            currentInput = '0';
+            previousInput = '';
+            currentOperation = null;
+            shouldResetDisplay = false;
+            updateDisplay();
+        }
+
+        function toggleSign() {
+            if (currentInput !== '0') {
+                if (currentInput.startsWith('-')) {
+                    currentInput = currentInput.substring(1);
+                } else {
+                    currentInput = '-' + currentInput;
+                }
+                updateDisplay();
+            }
+        }
+
+        function backspace() {
+            if (shouldResetDisplay) {
+                shouldResetDisplay = false;
+                return;
+            }
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = '0';
+            }
+            updateDisplay();
+        }
+
+        function setOperation(operation) {
+            if (currentOperation !== null && !shouldResetDisplay) {
+                calculate();
+            }
+            previousInput = currentInput;
+            currentOperation = operation;
+            shouldResetDisplay = true;
+            updateDisplay();
+        }
+
+        function calculate() {
+            if (currentOperation === null || previousInput === '') return;
+            
+            let result;
+            const prev = parseFloat(previousInput);
+            const current = parseFloat(currentInput);
+            let opSymbol = currentOperation;
+
+            switch (currentOperation) {
+                case '+': result = prev + current; break;
+                case '-': result = prev - current; break;
+                case '*': result = prev * current; opSymbol = '×'; break;
+                case '/': 
+                    if (current === 0) {
+                        result = 'Помилка';
+                    } else {
+                        result = prev / current; 
+                    }
+                    opSymbol = '÷';
+                    break;
+            }
+
+            if (typeof result === 'number') {
+                result = Math.round(result * 100000000) / 100000000;
+            }
+
+            // Зберігаємо вираз для відображення (як 4+6=10 на картинці)
+            expressionElement.textContent = `${previousInput}${opSymbol}${currentInput}=${result}`;
+
+            currentInput = result.toString();
+            currentOperation = null;
+            previousInput = '';
+            shouldResetDisplay = true;
+            
+            displayElement.textContent = currentInput;
+        }
+    </script>
+</body>
+</html>

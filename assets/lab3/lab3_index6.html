@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Завдання 6 - Варіант 9</title>
+    <style>
+        /* Примусово робимо світлий фон незалежно від теми браузера */
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9 !important;
+            color: #333 !important;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding-bottom: 80px; /* Відступ, щоб футер не перекривав контент */
+        }
+
+        .top-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 16px;
+            color: #0056b3 !important;
+            text-decoration: none;
+            z-index: 1000;
+        }
+        .top-link:hover { text-decoration: underline; }
+
+        .content-box {
+            background: #ffffff !important;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 500px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        #toggleBtn {
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #0056b3 !important;
+            color: white !important;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: background-color 0.2s;
+            font-weight: bold;
+        }
+        #toggleBtn:hover { background-color: #004080 !important; }
+
+        /* Стилі для картинки */
+        .media-wrapper {
+            margin: 20px 0;
+            width: 200px;
+            height: 150px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #media-item {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.5s ease; /* Плавна поява нової картинки */
+        }
+
+        /* Статус завантаження картинки */
+        #timerStatus {
+            font-size: 14px;
+            color: #888 !important;
+            height: 20px;
+            margin-bottom: 10px;
+        }
+
+        #highlight {
+            transition: color 0.3s, font-size 0.3s;
+            font-size: 18px;
+        }
+
+        /* Клас для кінцевого стану тексту */
+        .final-state-text {
+            color: purple !important;
+            font-size: 20px !important;
+            font-weight: bold;
+        }
+
+        /* Робимо футер завжди видимим знизу */
+        #footer-text {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 15px;
+            background-color: #333 !important;
+            color: #ccc !important;
+            font-size: 16px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <a class="top-link" href="home_index.html">На головну дисципліни</a>
+
+    <div class="content-box">
+        <button id="toggleBtn" onclick="toggleState()">Перейти в кінцевий стан</button>
+
+        <p id="highlight">Цей текст змінить свій колір та розмір у кінцевому стані.</p>
+
+        <div class="media-wrapper">
+            <img id="media-item" src="" alt="Медіа">
+        </div>
+        
+        <div id="timerStatus"></div>
+    </div>
+
+    <footer id="footer-text">
+        © 2024 Старий Футер
+    </footer>
+
+    <script>
+        let isFinalState = false;
+        let timerId = null;
+        let countdownId = null;
+
+        // Зображення (SVG)
+        const initialSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'><rect width='200' height='150' fill='%23cccccc'/><text x='50%' y='50%' font-size='16' text-anchor='middle' fill='%23666' dominant-baseline='middle'>Початкове фото</text></svg>";
+        const newSvg = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150'><rect width='200' height='150' fill='%230056b3'/><text x='50%' y='50%' font-size='20' text-anchor='middle' fill='%23ffffff' dominant-baseline='middle'>Нове фото!</text></svg>";
+
+        const mediaItem = document.getElementById('media-item');
+        const timerStatus = document.getElementById('timerStatus');
+
+        // Встановлюємо початкове зображення при завантаженні
+        mediaItem.src = initialSvg;
+
+        // 6.1. Оновлення футера
+        function updateFooter() {
+            const currentYear = new Date().getFullYear();
+            document.getElementById('footer-text').textContent = `© ${currentYear} MyCompany`;
+        }
+
+        // 6.3. Оновлення тексту
+        function updateHighlight(activate) {
+            const highlightText = document.getElementById('highlight');
+            if (activate) {
+                highlightText.classList.add('final-state-text');
+            } else {
+                highlightText.classList.remove('final-state-text');
+            }
+        }
+
+        // 6.2. Зміна картинки через 3 секунди
+        function startMediaChange() {
+            // Скидаємо попередні таймери
+            clearTimeout(timerId);
+            clearInterval(countdownId);
+            
+            mediaItem.src = initialSvg;
+            
+            let secondsLeft = 3;
+            timerStatus.textContent = `Зміна фото через ${secondsLeft}...`;
+
+            // Візуальний зворотний відлік
+            countdownId = setInterval(() => {
+                secondsLeft--;
+                if (secondsLeft > 0) {
+                    timerStatus.textContent = `Зміна фото через ${secondsLeft}...`;
+                }
+            }, 1000);
+
+            // Безпосередньо зміна картинки через 3 секунди
+            timerId = setTimeout(() => {
+                mediaItem.src = newSvg;
+                clearInterval(countdownId);
+                timerStatus.textContent = "Фото змінено!";
+            }, 3000);
+        }
+
+        // Функція скасування таймерів (при поверненні в початковий стан)
+        function stopMediaChange() {
+            clearTimeout(timerId);
+            clearInterval(countdownId);
+            mediaItem.src = initialSvg;
+            timerStatus.textContent = "";
+        }
+
+        // Головна функція перемикання
+        function toggleState() {
+            isFinalState = !isFinalState;
+            const btn = document.getElementById('toggleBtn');
+
+            if (isFinalState) {
+                btn.textContent = "Перейти в початковий стан";
+                updateFooter();
+                updateHighlight(true);
+                startMediaChange();
+            } else {
+                btn.textContent = "Перейти в кінцевий стан";
+                document.getElementById('footer-text').textContent = "© 2024 Старий Футер";
+                updateHighlight(false);
+                stopMediaChange();
+            }
+        }
+    </script>
+
+</body>
+</html>

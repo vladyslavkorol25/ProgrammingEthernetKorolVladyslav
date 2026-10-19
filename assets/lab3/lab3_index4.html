@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Перегляд зображень</title>
+    <style>
+        /* Примусово задаємо світлі кольори, щоб не залежати від теми браузера */
+        html, body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #f4f4f9 !important;
+            color: #333 !important;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .top-link {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 16px;
+            color: #0056b3 !important;
+            text-decoration: none;
+            z-index: 1000;
+        }
+        .top-link:hover {
+            text-decoration: underline;
+        }
+
+        .gallery-container {
+            background-color: #ffffff !important;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 600px; /* Трохи збільшив ширину для кращого вигляду */
+        }
+
+        /* Контейнер для картинки, щоб вона не ламала верстку */
+        .image-wrapper {
+            width: 100%;
+            height: 350px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            overflow: hidden;
+            background-color: #eaeaea;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #galleryImage {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Зберігає пропорції, не обрізає */
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #0056b3 !important;
+            color: white !important;
+            border: 2px solid #004080 !important;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #004080 !important;
+        }
+
+        button:active {
+            background-color: #002b5e !important;
+        }
+        
+        .counter {
+            margin-top: 15px;
+            color: #666 !important;
+            font-size: 16px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <a class="top-link" href="home_index.html">На головну дисципліни</a>
+
+    <div class="gallery-container">
+        <div class="image-wrapper">
+            <img id="galleryImage" src="" alt="Зображення">
+        </div>
+        
+        <div class="controls">
+            <button onclick="prevImage()">&#8592; Назад</button>
+            <button onclick="nextImage()">Вперед &#8594;</button>
+        </div>
+        
+        <div class="counter" id="imageCounter"></div>
+    </div>
+
+    <script>
+        // Масив з 4 вбудованих SVG-картинок (вони працюють без інтернету)
+        let images = [
+            "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23ff9999'/><circle cx='200' cy='150' r='100' fill='%23ffcccc'/><text x='50%' y='50%' font-size='30' text-anchor='middle' fill='%23333' dominant-baseline='middle'>Червоне коло</text></svg>",
+            
+            "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%2399ccff'/><rect x='100' y='75' width='200' height='150' fill='%23cce6ff'/><text x='50%' y='50%' font-size='30' text-anchor='middle' fill='%23333' dominant-baseline='middle'>Синій квадрат</text></svg>",
+            
+            "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%2399ff99'/><polygon points='200,50 350,250 50,250' fill='%23ccffcc'/><text x='50%' y='50%' font-size='30' text-anchor='middle' fill='%23333' dominant-baseline='middle'>Зелений трикутник</text></svg>",
+            
+            "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='400' height='300' fill='%23ffe699'/><polygon points='200,20 380,150 200,280 20,150' fill='%23fff2cc'/><text x='50%' y='50%' font-size='30' text-anchor='middle' fill='%23333' dominant-baseline='middle'>Жовтий ромб</text></svg>"
+        ];
+
+        let currentIndex = 0;
+        const imgElement = document.getElementById('galleryImage');
+        const counterElement = document.getElementById('imageCounter');
+
+        function updateDisplay() {
+            imgElement.src = images[currentIndex];
+            counterElement.textContent = `Зображення ${currentIndex + 1} з ${images.length}`;
+        }
+
+        function nextImage() {
+            currentIndex++;
+            if (currentIndex >= images.length) {
+                currentIndex = 0;
+            }
+            updateDisplay();
+        }
+
+        function prevImage() {
+            currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = images.length - 1;
+            }
+            updateDisplay();
+        }
+
+        // Ініціалізація при завантаженні
+        updateDisplay();
+    </script>
+
+</body>
+</html>
