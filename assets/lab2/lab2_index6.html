@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Завдання 6</title>
+</head>
+<body>
+            <a style="display:block; text-align:right" href="home_index.html">
+На головну дисципліни
+</a>
+    <h3>Результати виведені в консоль (F12)</h3>
+    <script>
+        let names = ["Alice", "Bob", "Oliver", "Eve", "Charlie", "Ivan", "Ursula"];
+
+        for (let i = 0; i < names.length; i++) {
+            let name = names[i];
+            let firstLetter = name[0].toLowerCase();
+            let vowels = "aeiouy";
+
+            if (vowels.includes(firstLetter)) {
+                console.log("Goodbye " + name);
+            } else {
+                console.log("Hello " + name);
+            }
+        }
+    </script>
+</body>
+</html>

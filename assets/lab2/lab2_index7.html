@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Завдання 7</title>
+</head>
+<body>
+                <a style="display:block; text-align:right" href="home_index.html">
+На головну дисципліни
+</a>
+    <h3>Результати виведені в консоль (F12)</h3>
+    <script>
+        let names = ["Alice", "Bob", "Oliver", "Eve", "Charlie", "Ivan", "Ursula"];
+
+        console.log("--- Спосіб 1: залежність від першої літери (голосна/приголосна) ---");
+        for (let i = 0; i < names.length; i++) {
+            let name = names[i];
+            let firstLetter = name[0].toLowerCase();
+            let vowels = "aeiouy";
+
+            if (vowels.includes(firstLetter)) {
+                console.log("Goodbye " + name);
+            } else {
+                console.log("Hello " + name);
+            }
+        }
+
+        console.log("--- Спосіб 2: залежність від суми ASCII-кодів літер імені (поріг 500) ---");
+        for (let i = 0; i < names.length; i++) {
+            let name = names[i];
+            let asciiSum = 0;
+            for (let j = 0; j < name.length; j++) {
+                asciiSum += name.charCodeAt(j);
+            }
+
+            if (asciiSum > 500) {
+                console.log("Hello " + name + " (сума ASCII = " + asciiSum + ", більше 500)");
+            } else {
+                console.log("Goodbye " + name + " (сума ASCII = " + asciiSum + ", менше або дорівнює 500)");
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Завдання 5</title>
+</head>
+<body>
+            <a style="display:block; text-align:right" href="home_index.html">
+На головну дисципліни
+</a>
+    <h3>Результати виконання виведені в консоль (F12)</h3>
+    <script>
+        // 1. console.info()
+        console.info("Це інформаційне повідомлення (console.info)");
+
+        // 2. console.warn()
+        console.warn("Це попередження (console.warn)");
+
+        // 3. console.error()
+        console.error("Це повідомлення про помилку (console.error)");
+
+        // 4. console.dir()
+        let obj = { name: "Іван", age: 20, city: "Київ" };
+        console.dir(obj);
+
+        // 5. console.dirxml()
+        console.dirxml(document.body);
+
+        // 6. console.time() та console.timeEnd()
+        console.time("Час виконання циклу");
+        let sum = 0;
+        for (let i = 0; i < 1000000; i++) {
+            sum += i;
+        }
+        console.timeEnd("Час виконання циклу");
+
+        // 7. console.profile() та console.profileEnd()
+        console.profile("Мій профіль");
+        let arr = [];
+        for (let i = 0; i < 10000; i++) {
+            arr.push(i * 2);
+        }
+        console.profileEnd("Мій профіль");
+
+        // 8. console.assert()
+        let x = 5;
+        console.assert(x === 10, "Помилка: x не дорівнює 10");
+        console.assert(x === 5, "Це повідомлення не з'явиться, бо умова істинна");
+    </script>
+</body>
+</html>
