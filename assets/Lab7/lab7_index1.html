@@ -1,0 +1,479 @@
+```html
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота 7</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 25px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        h1, h2 {
+            color: #2457a7;
+        }
+
+        input {
+            padding: 10px;
+            margin: 5px 0 12px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 18px;
+            background: #2457a7;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px 5px 5px 0;
+        }
+
+        button:hover {
+            background: #173d7a;
+        }
+
+        .clear {
+            background: #777;
+        }
+
+        .result {
+            margin-top: 12px;
+            padding: 12px;
+            background: #edf3ff;
+            border-radius: 5px;
+            line-height: 1.7;
+        }
+
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Лабораторна робота №7</h1>
+    <h2>Робота з об'єктами. Вбудований об'єкт Date. Класи в JavaScript</h2>
+    <p><b>Виконав:</b> Владислав Русланович Король</p>
+    <p><b>Варіант:</b> 9</p>
+
+    <div class="section">
+        <h2>Завдання 1. Робота з часом</h2>
+
+        <div id="currentTime" class="result"></div>
+
+        <label>Введіть кількість секунд для зміни часу:</label>
+        <input type="number" id="secondsInput" placeholder="Кількість секунд">
+
+        <button onclick="changeTime()">Змінити час</button>
+        <button class="clear" onclick="clearTime()">Очистити поля</button>
+
+        <div id="timeResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>Завдання 2.1. Виведення поточної дати, дня тижня і часу</h2>
+
+        <button onclick="showDate()">Виконати</button>
+
+        <div id="dateResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>Завдання 2.2. Визначення останнього дня місяця</h2>
+
+        <label>Введіть рік:</label>
+        <input type="number" id="yearInput" placeholder="Наприклад, 2026">
+
+        <label>Введіть номер місяця:</label>
+        <input type="number" id="monthInput" min="1" max="12" placeholder="Від 1 до 12">
+
+        <button onclick="showLastDay()">Виконати</button>
+
+        <div id="lastDayResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>Завдання 2.3. Кількість секунд до початку та кінця дня</h2>
+
+        <button onclick="showDaySeconds()">Виконати</button>
+
+        <div id="daySecondsResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>Завдання 3. Клас Car</h2>
+
+        <label>Марка автомобіля:</label>
+        <input type="text" id="carBrand" placeholder="Toyota">
+
+        <label>Модель автомобіля:</label>
+        <input type="text" id="carModel" placeholder="Camry">
+
+        <label>Рік випуску:</label>
+        <input type="number" id="carYear" placeholder="2020">
+
+        <button onclick="showCar()">Показати інформацію</button>
+
+        <div id="carResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>Завдання 4. Клас ElectricCar</h2>
+
+        <label>Марка електромобіля:</label>
+        <input type="text" id="electricBrand" placeholder="Tesla">
+
+        <label>Модель електромобіля:</label>
+        <input type="text" id="electricModel" placeholder="Model 3">
+
+        <label>Рік випуску:</label>
+        <input type="number" id="electricYear" placeholder="2022">
+
+        <label>Ємність батареї (kWh):</label>
+        <input type="number" id="battery" placeholder="75">
+
+        <button onclick="showElectricCar()">Показати інформацію</button>
+
+        <div id="electricResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>Завдання 5. Статичний метод MathHelper</h2>
+
+        <label>Перше число:</label>
+        <input type="number" id="number1" placeholder="Перше число">
+
+        <label>Друге число:</label>
+        <input type="number" id="number2" placeholder="Друге число">
+
+        <button onclick="calculateSum()">Обчислити суму</button>
+
+        <div id="sumResult" class="result"></div>
+    </div>
+
+    <div class="section">
+        <h2>Завдання 6. Варіант 9. Робота з фігурами</h2>
+
+        <h3>Коло</h3>
+
+        <label>Введіть радіус кола:</label>
+        <input type="number" id="circleRadius" min="0" step="any" placeholder="Радіус">
+
+        <h3>Трикутник</h3>
+
+        <label>Введіть першу сторону:</label>
+        <input type="number" id="sideA" min="0" step="any" placeholder="Сторона A">
+
+        <label>Введіть другу сторону:</label>
+        <input type="number" id="sideB" min="0" step="any" placeholder="Сторона B">
+
+        <label>Введіть третю сторону:</label>
+        <input type="number" id="sideC" min="0" step="any" placeholder="Сторона C">
+
+        <button onclick="showShapes()">Показати інформацію</button>
+        <button class="clear" onclick="clearShapes()">Очистити поля</button>
+
+        <div id="shapesResult" class="result"></div>
+    </div>
+
+</div>
+
+<script>
+    let currentHours = new Date().getHours();
+    let currentMinutes = new Date().getMinutes();
+    let currentSeconds = new Date().getSeconds();
+
+    function updateTime() {
+        document.getElementById("currentTime").innerHTML =
+            "Поточний час: " +
+            String(currentHours).padStart(2, "0") + ":" +
+            String(currentMinutes).padStart(2, "0") + ":" +
+            String(currentSeconds).padStart(2, "0");
+    }
+
+    function changeTime() {
+        let seconds = Number(document.getElementById("secondsInput").value);
+
+        if (document.getElementById("secondsInput").value === "") {
+            document.getElementById("timeResult").innerHTML = "Введіть кількість секунд.";
+            return;
+        }
+
+        let totalSeconds = currentHours * 3600 + currentMinutes * 60 + currentSeconds;
+        totalSeconds = ((totalSeconds + seconds) % 86400 + 86400) % 86400;
+
+        currentHours = Math.floor(totalSeconds / 3600);
+        currentMinutes = Math.floor((totalSeconds % 3600) / 60);
+        currentSeconds = totalSeconds % 60;
+
+        updateTime();
+
+        document.getElementById("timeResult").innerHTML =
+            "Час після зміни: " +
+            String(currentHours).padStart(2, "0") + ":" +
+            String(currentMinutes).padStart(2, "0") + ":" +
+            String(currentSeconds).padStart(2, "0");
+    }
+
+    function clearTime() {
+        document.getElementById("secondsInput").value = "";
+        document.getElementById("timeResult").innerHTML = "";
+    }
+
+    updateTime();
+
+    function showDate() {
+        let date = new Date();
+
+        let months = [
+            "січня", "лютого", "березня", "квітня",
+            "травня", "червня", "липня", "серпня",
+            "вересня", "жовтня", "листопада", "грудня"
+        ];
+
+        let days = [
+            "неділя", "понеділок", "вівторок",
+            "середа", "четвер", "п'ятниця", "субота"
+        ];
+
+        document.getElementById("dateResult").innerHTML =
+            "Дата: " + date.getDate() + " " +
+            months[date.getMonth()] + " " +
+            date.getFullYear() + " року<br>" +
+            "День тижня: " + days[date.getDay()] + "<br>" +
+            "Час: " +
+            String(date.getHours()).padStart(2, "0") + ":" +
+            String(date.getMinutes()).padStart(2, "0");
+    }
+
+    function showLastDay() {
+        let year = Number(document.getElementById("yearInput").value);
+        let month = Number(document.getElementById("monthInput").value);
+
+        if (!Number.isInteger(year) || year < 1 ||
+            !Number.isInteger(month) || month < 1 || month > 12) {
+            document.getElementById("lastDayResult").innerHTML =
+                "Введіть правильний рік та номер місяця від 1 до 12.";
+            return;
+        }
+
+        let lastDay = new Date(year, month, 0).getDate();
+
+        document.getElementById("lastDayResult").innerHTML =
+            "Останній день місяця: " + lastDay;
+    }
+
+    function getDaySeconds() {
+        let now = new Date();
+
+        let secondsPassed =
+            now.getHours() * 3600 +
+            now.getMinutes() * 60 +
+            now.getSeconds();
+
+        let secondsRemaining = 86400 - secondsPassed;
+
+        return {
+            secondsPassed: secondsPassed,
+            secondsRemaining: secondsRemaining
+        };
+    }
+
+    function showDaySeconds() {
+        let result = getDaySeconds();
+
+        document.getElementById("daySecondsResult").innerHTML =
+            "Секунд пройшло від початку дня: " + result.secondsPassed + "<br>" +
+            "Секунд до початку наступного дня: " + result.secondsRemaining;
+    }
+
+    class Car {
+        constructor(brand, model, year) {
+            this.brand = brand;
+            this.model = model;
+            this.year = year;
+        }
+
+        info() {
+            return "Автомобіль: " + this.brand + " " +
+                this.model + ", " + this.year + " року.";
+        }
+    }
+
+    function showCar() {
+        let brand = document.getElementById("carBrand").value.trim();
+        let model = document.getElementById("carModel").value.trim();
+        let year = Number(document.getElementById("carYear").value);
+
+        if (!brand || !model || !Number.isInteger(year) || year < 1886 || year > new Date().getFullYear()) {
+            document.getElementById("carResult").innerHTML = "Введіть правильні дані автомобіля.";
+            return;
+        }
+
+        let car = new Car(brand, model, year);
+
+        document.getElementById("carResult").innerHTML = car.info();
+    }
+
+    class ElectricCar extends Car {
+        constructor(brand, model, year, battery) {
+            super(brand, model, year);
+            this.battery = battery;
+        }
+
+        charge() {
+            return this.brand + " " + this.model +
+                " заряджається. Ємність батареї: " + this.battery + " kWh.";
+        }
+    }
+
+    function showElectricCar() {
+        let brand = document.getElementById("electricBrand").value.trim();
+        let model = document.getElementById("electricModel").value.trim();
+        let year = Number(document.getElementById("electricYear").value);
+        let battery = Number(document.getElementById("battery").value);
+
+        if (!brand || !model || !Number.isInteger(year) || year < 1886 ||
+            year > new Date().getFullYear() || !Number.isFinite(battery) || battery <= 0) {
+            document.getElementById("electricResult").innerHTML = "Введіть правильні дані електромобіля.";
+            return;
+        }
+
+        let tesla = new ElectricCar(brand, model, year, battery);
+
+        document.getElementById("electricResult").innerHTML =
+            tesla.info() + "<br>" + tesla.charge();
+    }
+
+    class MathHelper {
+        static add(a, b) {
+            return a + b;
+        }
+    }
+
+    function calculateSum() {
+        let first = document.getElementById("number1").value;
+        let second = document.getElementById("number2").value;
+
+        if (first === "" || second === "") {
+            document.getElementById("sumResult").innerHTML = "Введіть обидва числа.";
+            return;
+        }
+
+        let result = MathHelper.add(Number(first), Number(second));
+
+        document.getElementById("sumResult").innerHTML =
+            "Сума чисел: " + result;
+    }
+
+    class Shape {
+        constructor(name) {
+            this.name = name;
+        }
+
+        getArea() {
+            return 0;
+        }
+
+        static countShapes(shapes) {
+            return shapes.length;
+        }
+    }
+
+    class Circle extends Shape {
+        constructor(radius) {
+            super("Коло");
+            this.radius = radius;
+        }
+
+        getArea() {
+            return Math.PI * this.radius * this.radius;
+        }
+    }
+
+    class Triangle extends Shape {
+        constructor(a, b, c) {
+            super("Трикутник");
+            this.a = a;
+            this.b = b;
+            this.c = c;
+        }
+
+        getArea() {
+            let p = (this.a + this.b + this.c) / 2;
+            return Math.sqrt(p * (p - this.a) * (p - this.b) * (p - this.c));
+        }
+    }
+
+    function showShapes() {
+        let radius = Number(document.getElementById("circleRadius").value);
+        let a = Number(document.getElementById("sideA").value);
+        let b = Number(document.getElementById("sideB").value);
+        let c = Number(document.getElementById("sideC").value);
+
+        if (document.getElementById("circleRadius").value === "" ||
+            document.getElementById("sideA").value === "" ||
+            document.getElementById("sideB").value === "" ||
+            document.getElementById("sideC").value === "" ||
+            !Number.isFinite(radius) || radius <= 0 ||
+            !Number.isFinite(a) || !Number.isFinite(b) || !Number.isFinite(c) ||
+            a <= 0 || b <= 0 || c <= 0 ||
+            a + b <= c || a + c <= b || b + c <= a) {
+            document.getElementById("shapesResult").innerHTML =
+                "Введіть правильні значення. Сторони трикутника мають утворювати трикутник.";
+            return;
+        }
+
+        let shapes = [
+            new Circle(radius),
+            new Triangle(a, b, c)
+        ];
+
+        let result = "";
+
+        for (let shape of shapes) {
+            result += shape.name + ": площа = " +
+                shape.getArea().toFixed(2) + "<br>";
+        }
+
+        result += "Кількість фігур: " + Shape.countShapes(shapes);
+
+        document.getElementById("shapesResult").innerHTML = result;
+    }
+
+    function clearShapes() {
+        document.getElementById("circleRadius").value = "";
+        document.getElementById("sideA").value = "";
+        document.getElementById("sideB").value = "";
+        document.getElementById("sideC").value = "";
+        document.getElementById("shapesResult").innerHTML = "";
+    }
+</script>
+
+</body>
+</html>
+```

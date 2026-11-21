@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лабораторна робота 6 — Робота з рядками</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f3f5f9;color:#202536;margin:0;padding:30px 15px}
+main{max-width:900px;margin:0 auto;background:#fff;padding:30px;border-radius:14px;box-shadow:0 8px 28px #18233a14}
+h1,h2,h3{color:#263b66}
+h1{font-size:26px;margin-top:0}
+h2{font-size:21px;margin-top:30px;border-bottom:1px solid #e4e8f0;padding-bottom:9px}
+h3{font-size:17px;margin-bottom:12px}
+.task{padding:17px 0;border-bottom:1px solid #edf0f5}
+.task:last-child{border-bottom:0}
+label{display:block;font-weight:600;margin:12px 0 6px}
+input{width:100%;padding:11px 12px;border:1px solid #cbd2df;border-radius:7px;font-size:16px}
+button{border:0;border-radius:7px;background:#315da8;color:#fff;font-size:15px;padding:10px 17px;cursor:pointer;margin-top:12px}
+button:hover{background:#244b8d}
+.output{margin-top:10px;padding:11px 13px;background:#f5f7fb;border-radius:7px;min-height:20px;overflow-wrap:anywhere;white-space:pre-wrap}
+.description{color:#626b7c;font-size:14px;line-height:1.5}
+.variant{background:#eef3ff;padding:15px;border-radius:9px;margin:14px 0}
+@media(max-width:560px){main{padding:19px}body{padding:12px 8px}}
+</style>
+</head>
+<body>
+<main>
+<h1>Лабораторна робота № 6</h1>
+<p><strong>Тема:</strong> JavaScript: робота з рядками</p>
+<p><strong>Варіант:</strong> 9</p>
+<p class="description">Введіть дані у відповідні поля та натисніть кнопку для отримання результату.</p>
+
+<h2>Завдання 1–7. Загальна робота з рядками</h2>
+
+<section class="task">
+<h3>Завдання 1. Довжина рядка</h3>
+<label for="t1">Введіть рядок</label>
+<input id="t1" type="text">
+<button onclick="runTask(1)">Виконати</button>
+<div class="output" id="o1"></div>
+</section>
+
+<section class="task">
+<h3>Завдання 2. Перетворення регістру</h3>
+<label for="t2">Введіть рядок</label>
+<input id="t2" type="text">
+<button onclick="runTask(2)">Виконати</button>
+<div class="output" id="o2"></div>
+</section>
+
+<section class="task">
+<h3>Завдання 3. Індекс першого входження символу</h3>
+<label for="t3">Введіть рядок</label>
+<input id="t3" type="text">
+<label for="c3">Введіть символ</label>
+<input id="c3" type="text" maxlength="1">
+<button onclick="runTask(3)">Виконати</button>
+<div class="output" id="o3"></div>
+</section>
+
+<section class="task">
+<h3>Завдання 4. Кількість входжень символу</h3>
+<label for="t4">Введіть рядок</label>
+<input id="t4" type="text">
+<label for="c4">Введіть символ</label>
+<input id="c4" type="text" maxlength="1">
+<button onclick="runTask(4)">Виконати</button>
+<div class="output" id="o4"></div>
+</section>
+
+<section class="task">
+<h3>Завдання 5. Заміна місцями сусідніх символів</h3>
+<label for="t5">Введіть рядок</label>
+<input id="t5" type="text">
+<button onclick="runTask(5)">Виконати</button>
+<div class="output" id="o5"></div>
+</section>
+
+<section class="task">
+<h3>Завдання 6. Перевірка рядка на спам</h3>
+<label for="t6">Введіть рядок</label>
+<input id="t6" type="text">
+<button onclick="runTask(6)">Виконати</button>
+<div class="output" id="o6"></div>
+</section>
+
+<section class="task">
+<h3>Завдання 7. Скорочення рядка</h3>
+<label for="t7">Введіть рядок</label>
+<input id="t7" type="text">
+<label for="n7">Максимальна довжина</label>
+<input id="n7" type="number" min="3" value="8">
+<button onclick="runTask(7)">Виконати</button>
+<div class="output" id="o7"></div>
+</section>
+
+<h2>Варіант 9</h2>
+<div class="variant">
+<strong>Завдання 8.9. Кількість голосних літер у рядку</strong>
+<label for="t89">Введіть рядок</label>
+<input id="t89" type="text">
+<button onclick="runTask(89)">Виконати</button>
+<div class="output" id="o89"></div>
+</div>
+
+<div class="variant">
+<strong>Завдання 9.9. Видалення всіх символів, які не є алфавітними</strong>
+<label for="t99">Введіть рядок</label>
+<input id="t99" type="text">
+<button onclick="runTask(99)">Виконати</button>
+<div class="output" id="o99"></div>
+</div>
+
+<div class="variant">
+<strong>Завдання 10.9. Найменший підрядок, який містить усі літери іншого рядка</strong>
+<label for="t109a">Введіть основний рядок</label>
+<input id="t109a" type="text" placeholder="Наприклад: ADOBECODEBANCD">
+<label for="t109b">Введіть рядок із потрібними літерами</label>
+<input id="t109b" type="text" placeholder="Наприклад: ABC">
+<button onclick="runTask(109)">Виконати</button>
+<div class="output" id="o109"></div>
+</div>
+</main>
+
+<script>
+function getValue(id) {
+    return document.getElementById(id).value;
+}
+
+function showResult(id, value) {
+    document.getElementById(id).textContent = value;
+}
+
+function runTask(task) {
+    if (task === 1) {
+        const s = getValue("t1");
+        showResult("o1", "Довжина рядка: " + s.length);
+    }
+
+    if (task === 2) {
+        const s = getValue("t2");
+        showResult("o2", "Верхній регістр: " + s.toUpperCase() + "\nНижній регістр: " + s.toLowerCase());
+    }
+
+    if (task === 3) {
+        const s = getValue("t3");
+        const c = getValue("c3");
+        showResult("o3", c ? "Індекс першого входження: " + s.indexOf(c) : "Введіть символ для пошуку.");
+    }
+
+    if (task === 4) {
+        const s = getValue("t4");
+        const c = getValue("c4");
+        if (!c) {
+            showResult("o4", "Введіть символ для підрахунку.");
+        } else {
+            let count = 0;
+            for (const char of s) {
+                if (char === c) count++;
+            }
+            showResult("o4", "Кількість входжень символу: " + count);
+        }
+    }
+
+    if (task === 5) {
+        const s = getValue("t5");
+        let result = "";
+        for (let i = 0; i < s.length; i += 2) {
+            if (i + 1 < s.length) {
+                result += s[i + 1] + s[i];
+            } else {
+                result += s[i];
+            }
+        }
+        showResult("o5", "Результат: " + result);
+    }
+
+    if (task === 6) {
+        const s = getValue("t6");
+        const spamWords = ["100% безкоштовно", "збільшення продажів", "тільки сьогодні", "не видаляйте"];
+        const isSpam = spamWords.some(word => s.toLocaleLowerCase("uk").includes(word));
+        showResult("o6", isSpam ? "true — рядок містить спам." : "false — спам не знайдено.");
+    }
+
+    if (task === 7) {
+        const s = getValue("t7");
+        const maxLength = Number(getValue("n7"));
+        if (!Number.isInteger(maxLength) || maxLength < 3) {
+            showResult("o7", "Максимальна довжина повинна бути цілим числом не менше 3.");
+        } else {
+            const result = s.length > maxLength ? s.slice(0, maxLength - 3) + "..." : s;
+            showResult("o7", "Результат: " + result);
+        }
+    }
+
+    if (task === 89) {
+        const s = getValue("t89");
+        const vowels = "aeiouyаеєиіїоуюяAEIOUYАЕЄИІЇОУЮЯ";
+        let count = 0;
+        for (const char of s) {
+            if (vowels.includes(char)) count++;
+        }
+        showResult("o89", "Кількість голосних літер: " + count);
+    }
+
+    if (task === 99) {
+        const s = getValue("t99");
+        const result = s.replace(/[^\p{L}]/gu, "");
+        showResult("o99", "Результат: " + result);
+    }
+
+    if (task === 109) {
+        const source = getValue("t109a");
+        const target = getValue("t109b");
+
+        if (target.length === 0) {
+            showResult("o109", "Введіть рядок із потрібними літерами.");
+            return;
+        }
+
+        const needed = new Map();
+        for (const char of target) {
+            needed.set(char, (needed.get(char) || 0) + 1);
+        }
+
+        const windowCounts = new Map();
+        let formed = 0;
+        const required = needed.size;
+        let left = 0;
+        let bestStart = 0;
+        let bestLength = Infinity;
+
+        for (let right = 0; right < source.length; right++) {
+            const char = source[right];
+            windowCounts.set(char, (windowCounts.get(char) || 0) + 1);
+
+            if (needed.has(char) && windowCounts.get(char) === needed.get(char)) {
+                formed++;
+            }
+
+            while (formed === required) {
+                const currentLength = right - left + 1;
+                if (currentLength < bestLength) {
+                    bestLength = currentLength;
+                    bestStart = left;
+                }
+
+                const leftChar = source[left];
+                windowCounts.set(leftChar, windowCounts.get(leftChar) - 1);
+
+                if (needed.has(leftChar) && windowCounts.get(leftChar) < needed.get(leftChar)) {
+                    formed--;
+                }
+
+                left++;
+            }
+        }
+
+        const result = bestLength === Infinity ? "Підрядок не знайдено." : "Найменший підрядок: " + source.slice(bestStart, bestStart + bestLength);
+        showResult("o109", result);
+    }
+}
+</script>
+</body>
+</html>

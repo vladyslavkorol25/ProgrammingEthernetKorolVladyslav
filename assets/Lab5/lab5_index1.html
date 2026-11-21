@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лабораторна робота 5 — Регулярні вирази JavaScript</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#f3f5f9;color:#202536;margin:0;padding:32px 16px}
+main{max-width:760px;margin:0 auto;background:#fff;padding:30px;border-radius:14px;box-shadow:0 8px 28px #18233a14}
+h1,h2{color:#263b66}
+h1{font-size:25px;margin-top:0}
+h2{font-size:19px;margin-top:28px}
+.example{background:#f5f7fb;border:1px solid #e1e6f0;border-radius:8px;padding:14px;overflow-wrap:anywhere}
+form{display:grid;gap:17px}
+.field{display:grid;grid-template-columns:1fr;gap:6px}
+label{font-weight:600}
+input{width:100%;padding:11px 12px;border:2px solid #cbd2df;border-radius:7px;font-size:16px;outline:none}
+input.valid{border-color:#219653;color:#202536}
+input.invalid{border-color:#d93025;color:#d93025}
+.result{font-size:14px;min-height:18px}
+.result.valid{color:#219653}
+.result.invalid{color:#d93025}
+button{border:0;border-radius:7px;background:#315da8;color:#fff;font-size:16px;padding:12px 20px;cursor:pointer}
+button:hover{background:#244b8d}
+.note{color:#626b7c;font-size:14px;line-height:1.5}
+@media(max-width:520px){main{padding:21px}body{padding:14px 9px}}
+</style>
+</head>
+<body>
+<main>
+<h1>Лабораторна робота № 5</h1>
+<p><strong>Тема:</strong> JavaScript: регулярні вирази</p>
+
+<h2>Завдання 1. Виведення елементів e-mail</h2>
+<div class="example" id="emailParts"></div>
+
+<h2>Завдання 2.1–2.2. Форма з перевіркою даних</h2>
+<form id="validationForm" novalidate>
+<div class="field">
+<label for="email">Адреса електронної пошти (e-mail)</label>
+<input id="email" name="email" type="text" autocomplete="email">
+<div class="result" id="emailResult"></div>
+</div>
+<div class="field">
+<label for="fullName">Ім’я та прізвище</label>
+<input id="fullName" name="fullName" type="text" autocomplete="name">
+<div class="result" id="fullNameResult"></div>
+</div>
+<div class="field">
+<label for="login">Логін</label>
+<input id="login" name="login" type="text" autocomplete="username">
+<div class="result" id="loginResult"></div>
+</div>
+<div class="field">
+<label for="password">Пароль</label>
+<input id="password" name="password" type="password" autocomplete="new-password">
+<div class="result" id="passwordResult"></div>
+</div>
+<div class="field">
+<label for="postcode">Поштовий індекс</label>
+<input id="postcode" name="postcode" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code">
+<div class="result" id="postcodeResult"></div>
+</div>
+<button type="submit">Перевірити дані</button>
+<div class="note" id="formResult" aria-live="polite"></div>
+</form>
+</main>
+<script>
+const sampleEmail = "dwbyu@mail.ua";
+const emailPattern = /^([a-z0-9]+)(\.[a-z0-9]+)*@([a-z0-9]+)(\.[a-z0-9]+)*$/i;
+const emailMatches = sampleEmail.match(emailPattern);
+const emailParts = document.getElementById("emailParts");
+
+if (emailMatches) {
+    emailMatches.forEach((part, index) => {
+        const line = document.createElement("div");
+        line.textContent = "a[" + index + "] " + part;
+        emailParts.appendChild(line);
+    });
+}
+
+const validations = [
+    {
+        id: "email",
+        resultId: "emailResult",
+        pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.pnu\.edu\.ua$/i,
+        error: "Введіть e-mail у домені pnu.edu.ua, наприклад name@pnu.edu.ua."
+    },
+    {
+        id: "fullName",
+        resultId: "fullNameResult",
+        pattern: /^[A-ZА-ЯІЇЄҐ][a-zа-яіїєґ]+ [A-ZА-ЯІЇЄҐ]+$/u,
+        error: "Перше слово: перша літера велика, решта маленькі; друге слово — лише великі літери. Дозволена кирилиця та латиниця."
+    },
+    {
+        id: "login",
+        resultId: "loginResult",
+        pattern: /^[A-Za-z]+$/,
+        error: "Логін повинен містити лише латинські літери."
+    },
+    {
+        id: "password",
+        resultId: "passwordResult",
+        pattern: /^(?=.*[A-Za-zА-Яа-яІіЇїЄєҐґ])(?=.*\d)(?=.*[_\-!@#$%^&*])[A-Za-zА-Яа-яІіЇїЄєҐґ\d_\-!@#$%^&*]{8,}$/,
+        error: "Пароль має містити щонайменше 8 символів, одну літеру, одну цифру та один спецсимвол із набору _-!@#$%^&*."
+    },
+    {
+        id: "postcode",
+        resultId: "postcodeResult",
+        pattern: /^\d{5}$/,
+        error: "Поштовий індекс повинен складатися рівно з 5 цифр."
+    }
+];
+
+document.getElementById("validationForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    let allValid = true;
+
+    validations.forEach(item => {
+        const field = document.getElementById(item.id);
+        const result = document.getElementById(item.resultId);
+        const isValid = item.pattern.test(field.value.trim());
+
+        field.classList.toggle("valid", isValid);
+        field.classList.toggle("invalid", !isValid);
+        result.classList.toggle("valid", isValid);
+        result.classList.toggle("invalid", !isValid);
+        result.textContent = isValid ? "✓ Правильно" : item.error;
+
+        if (!isValid) {
+            allValid = false;
+        }
+    });
+
+    const formResult = document.getElementById("formResult");
+    formResult.textContent = allValid
+        ? "Усі поля заповнені правильно."
+        : "Будь ласка, виправте поля, позначені червоним.";
+    formResult.style.color = allValid ? "#219653" : "#d93025";
+});
+</script>
+</body>
+</html>

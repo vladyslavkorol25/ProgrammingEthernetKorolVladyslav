@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лабораторна робота 8</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #080d1c;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.container {
+    width: 90%;
+    max-width: 850px;
+    height: 550px;
+    background: linear-gradient(135deg, #101b36, #172c52);
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 50px #1675d1;
+}
+
+.logo {
+    width: 130px;
+    height: 130px;
+    border: 5px solid #38bdf8;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 65px;
+    font-weight: bold;
+    color: #38bdf8;
+    animation: rotate 4s infinite alternate ease-in-out,
+               pulse 2s infinite alternate;
+    position: relative;
+    z-index: 2;
+}
+
+.title {
+    margin-top: 35px;
+    font-size: 28px;
+    text-align: center;
+    color: #ffffff;
+    animation: appear 3s infinite alternate;
+}
+
+.subtitle {
+    margin-top: 15px;
+    font-size: 17px;
+    color: #38bdf8;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 0;
+    animation: typing 5s steps(35) infinite;
+}
+
+.orbit {
+    width: 240px;
+    height: 240px;
+    border: 2px dashed #38bdf8;
+    border-radius: 50%;
+    position: absolute;
+    animation: rotate 8s linear infinite;
+}
+
+.dot {
+    width: 18px;
+    height: 18px;
+    background: #facc15;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    box-shadow: 0 0 20px #facc15;
+}
+
+.particle {
+    width: 12px;
+    height: 12px;
+    background: #38bdf8;
+    border-radius: 50%;
+    position: absolute;
+    animation: float 4s infinite alternate ease-in-out;
+}
+
+.p1 { top: 15%; left: 15%; }
+.p2 { top: 25%; right: 15%; animation-delay: 1s; }
+.p3 { bottom: 20%; left: 20%; animation-delay: 2s; }
+.p4 { bottom: 15%; right: 20%; animation-delay: 0.5s; }
+.p5 { top: 50%; left: 8%; animation-delay: 1.5s; }
+.p6 { top: 50%; right: 8%; animation-delay: 2.5s; }
+
+button {
+    margin-top: 40px;
+    padding: 15px 45px;
+    border: none;
+    border-radius: 30px;
+    background: #0284c7;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    transition: 0.3s;
+    z-index: 5;
+}
+
+button:hover {
+    background: #38bdf8;
+    transform: scale(1.08);
+}
+
+.container.paused * {
+    animation-play-state: paused !important;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(0.8);
+        box-shadow: 0 0 10px #38bdf8;
+    }
+    to {
+        transform: scale(1.15);
+        box-shadow: 0 0 40px #38bdf8;
+    }
+}
+
+@keyframes appear {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes typing {
+    0% { width: 0; }
+    70% { width: 100%; }
+    100% { width: 0; }
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0) scale(0.5);
+        background: #38bdf8;
+    }
+    50% {
+        transform: translate(40px, -50px) scale(1.5);
+        background: #a855f7;
+    }
+    100% {
+        transform: translate(-30px, 40px) scale(0.8);
+        background: #facc15;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container" id="animation">
+
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+    <div class="particle p4"></div>
+    <div class="particle p5"></div>
+    <div class="particle p6"></div>
+
+    <div class="orbit">
+        <div class="dot"></div>
+    </div>
+
+    <div class="logo">IT</div>
+
+    <div class="title">
+        Інженерія програмного забезпечення
+    </div>
+
+    <div class="subtitle">
+        CREATE • CODE • INNOVATE
+    </div>
+
+    <button id="toggle">
+        Зупинити анімацію
+    </button>
+
+</div>
+
+<script>
+const animation = document.getElementById("animation");
+const button = document.getElementById("toggle");
+
+let running = true;
+
+button.addEventListener("click", function() {
+    running = !running;
+
+    animation.classList.toggle("paused", !running);
+
+    if (running) {
+        button.textContent = "Зупинити анімацію";
+    } else {
+        button.textContent = "Продовжити анімацію";
+    }
+});
+
+function createParticle() {
+    const particle = document.createElement("div");
+
+    particle.className = "particle";
+
+    particle.style.left = Math.random() * 90 + "%";
+    particle.style.top = Math.random() * 90 + "%";
+    particle.style.animationDuration = (2 + Math.random() * 4) + "s";
+
+    animation.appendChild(particle);
+
+    setTimeout(() => {
+        particle.remove();
+    }, 6000);
+}
+
+setInterval(() => {
+    if (running) {
+        createParticle();
+    }
+}, 1500);
+</script>
+
+</body>
+</html>
